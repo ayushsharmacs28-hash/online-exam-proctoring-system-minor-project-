@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Online Exam Proctor System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <h1>🎓 Exam Proctor</h1>
+            <p class="subtitle">AI-Powered Online Examination System</p>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form action="/login" method="post" class="auth-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" 
+                       id="email" 
+                       name="email" 
+                       placeholder="Enter your email" 
+                       required 
+                       autocomplete="email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" 
+                       id="password" 
+                       name="password" 
+                       placeholder="Enter your password" 
+                       required 
+                       autocomplete="current-password">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                Login
+            </button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="/register">Register here</a></p>
+        </div>
+        
+        <div class="demo-credentials">
+            <p class="demo-title">Demo Credentials:</p>
+            <p><strong>Student:</strong> student@demo.com / password123</p>
+            <p><strong>Admin:</strong> admin@demo.com / admin123</p>
+        </div>
+    </div>
+</body>
+</html>

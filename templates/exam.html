@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Exam - Proctor System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="exam-body">
+    <div class="exam-container">
+        <!-- Header -->
+        <header class="exam-header">
+            <div class="exam-title">
+                <h1>🎓 Online Examination</h1>
+                <p>Student: {{ user_name }}</p>
+            </div>
+            <div class="exam-info">
+                <div class="timer" id="timer">30:00</div>
+                <div class="violations" id="violation-count">
+                    ⚠️ Violations: <span id="violation-number">0</span>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </header>
+
+        <!-- Main Content -->
+        <div class="exam-content">
+            <!-- Left: Questions -->
+            <div class="questions-section">
+                <div class="proctoring-status">
+                    <div class="status-item">
+                        <span class="status-icon">📹</span>
+                        <span>Camera Active</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon">🔒</span>
+                        <span>Tab Monitoring Active</span>
+                    </div>
+                </div>
+
+                <form id="examForm">
+                    {% for question in questions %}
+                    <div class="question-card">
+                        <div class="question-header">
+                            <span class="question-number">Question {{ question.id }}</span>
+                        </div>
+                        <p class="question-text">{{ question.question }}</p>
+                        <div class="options">
+                            {% for option in question.options %}
+                            <label class="option-label">
+                                <input type="radio" name="question_{{ question.id }}" value="{{ loop.index0 }}"
+                                    required>
+                                <span class="option-text">{{ option }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary btn-submit" id="submitBtn">
+                        Submit Exam
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right: Webcam Monitor -->
+            <div class="monitor-section">
+                <div class="webcam-container">
+                    <h3>Live Monitoring</h3>
+                    <video id="webcam" autoplay playsinline></video>
+                    <canvas id="canvas" style="display:none;"></canvas>
+                    <div class="monitor-status" id="monitorStatus">
+                        <p>✓ Face detected</p>
+                    </div>
+                </div>
+
+                <div class="warnings-box">
+                    <h4>⚠️ Important Guidelines</h4>
+                    <ul>
+                        <li>Keep your face visible at all times</li>
+                        <li>Do not switch tabs or windows</li>
+                        <li>Only one person should be visible</li>
+                        <li>Ensure good lighting</li>
+                    </ul>
+                </div>
+
+                <div class="violation-log" id="violationLog">
+                    <h4>Recent Violations</h4>
+                    <div id="violationList">
+                        <p class="no-violations">No violations yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <h2>Exam Submitted Successfully!</h2>
+            <div id="resultContent"></div>
+            <button class="btn btn-primary" onclick="window.location.href='/logout'">
+                Exit
+            </button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='webcam.js') }}"></script>
+    <script src="{{ url_for('static', filename='exam.js') }}"></script>
+</body>
+
+</html>

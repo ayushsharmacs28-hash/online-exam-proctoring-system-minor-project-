@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Exam Proctor System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div>
+                <h1>📊 Admin Dashboard</h1>
+                <p>Monitor and analyze exam violations</p>
+            </div>
+            <button class="btn btn-secondary" onclick="window.location.href='/logout'">
+                Logout
+            </button>
+        </header>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total_users }}</h3>
+                    <p>Total Users</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total_exams }}</h3>
+                    <p>Exams Taken</p>
+                </div>
+            </div>
+
+            <div class="stat-card warning-card">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-info">
+                    <h3>{{ stats.total_violations }}</h3>
+                    <p>Total Violations</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h3>{{ "%.1f"|format(stats.total_violations / stats.total_exams if stats.total_exams > 0 else 0) }}
+                    </h3>
+                    <p>Avg Violations/Exam</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Violation Types Breakdown -->
+        <div class="content-section">
+            <h2>Violation Types Breakdown</h2>
+            <div class="violation-types">
+                {% for vtype, count in stats.violation_types.items() %}
+                <div class="violation-type-card">
+                    <span class="vtype-name">{{ vtype }}</span>
+                    <span class="vtype-count">{{ count }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recent Exam Results -->
+        {% if recent_results %}
+        <div class="content-section">
+            <h2>Recent Exam Results</h2>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student Email</th>
+                            <th>Exam Score</th>
+                            <th>Suspicious Score</th>
+                            <th>Violations</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in recent_results %}
+                        <tr>
+                            <td>{{ result.user_email }}</td>
+                            <td>
+                                <span
+                                    class="score-badge score-{{ 'high' if result.exam_score >= 80 else 'medium' if result.exam_score >= 60 else 'low' }}">
+                                    {{ "%.1f"|format(result.exam_score) }}%
+                                </span>
+                            </td>
+                            <td>
+                                <span
+                                    class="score-badge {{ 'warning' if result.suspicious_score >= 30 else 'success' }}">
+                                    {{ result.suspicious_score }}
+                                </span>
+                            </td>
+                            <td>{{ result.violations.violations.values()|sum }}</td>
+                            <td>{{ result.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Violation Logs -->
+        <div class="content-section">
+            <h2>Recent Violations Log</h2>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Student Email</th>
+                            <th>Timestamp</th>
+                            <th>Session ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for violation in violations %}
+                        <tr>
+                            <td>
+                                <span class="violation-badge violation-{{ violation.type.replace(' ', '-').lower() }}">
+                                    {{ violation.type }}
+                                </span>
+                            </td>
+                            <td>{{ violation.user_email or 'Unknown' }}</td>
+                            <td>{{ violation.time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            <td>
+                                <code
+                                    class="session-id">{{ violation.session_id[:8] if violation.session_id else 'N/A' }}...</code>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh every 30 seconds
+        setTimeout(() => {
+            location.reload();
+        }, 30000);
+    </script>
+</body>
+
+</html>
