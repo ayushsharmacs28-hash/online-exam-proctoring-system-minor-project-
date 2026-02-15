@@ -58,56 +58,6 @@ Before running the application, ensure you have:
 3. **Webcam** for proctoring features
 4. **Modern web browser** (Chrome, Firefox, Edge)
 
-## 🚀 Installation & Setup
-
-### Step 1: Clone or Navigate to Project Directory
-
-```bash
-cd "C:\Users\AKSHIT GARG\OneDrive\Desktop\ONLINE EXAM PROCTOR SYSTEM"
-```
-
-### Step 2: Install Python Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-**Note**: Installing `face-recognition` may take a few minutes as it includes dlib and other dependencies.
-
-### Step 3: Start MongoDB
-
-**Windows:**
-```bash
-# Start MongoDB service
-net start MongoDB
-
-# OR run mongod directly
-mongod
-```
-
-**Linux/Mac:**
-```bash
-sudo systemctl start mongod
-```
-
-### Step 4: Create Demo Users
-
-```bash
-python database/demo_user.py
-```
-
-This creates:
-- **Student Account**: `student@demo.com` / `password123`
-- **Admin Account**: `admin@demo.com` / `admin123`
-
-### Step 5: Run the Application
-
-```bash
-python app.py
-```
-
-The application will start on **http://localhost:5000**
-
 ## 📖 How to Use
 
 ### For Students
@@ -256,6 +206,19 @@ To add more questions, edit the `EXAM_QUESTIONS` list in `app.py`.
 **Akshit Garg**
 - Email: akshit.garg.cs29@iilm.edu
 
+**Shaurya Srivastava**
+- Email: shaurya.srivastava.cs29@iilm.edu
+
+**Ajay Kumar**
+- Email: ajay.kumar.cs28@iilm.edu
+
+**Nayan pandey**
+- Email: nayan.pandey.cs28@iilm.edu
+
+**Ayush Sharma**
+- Email: ayush.sharma.cs28@iilm.edu
+
+
 ## 📄 License
 
 This project is licensed under the MIT License.
@@ -270,13 +233,6 @@ This project is licensed under the MIT License.
 ---
 
 **⚠️ Important Note**: This system is designed for educational purposes. For production use, additional security measures and compliance with examination regulations should be implemented.
-
-## 📞 Support
-
-For issues or questions:
-1. Check the Troubleshooting section above
-2. Review MongoDB and Python logs
-3. Ensure all dependencies are installed correctly
 
 ---
 
