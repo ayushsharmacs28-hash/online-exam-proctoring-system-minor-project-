@@ -35,6 +35,3 @@ def create_demo_users():
     print("✓ Created admin account: admin@demo.com / admin123")
     
     print("\n✓ Demo users created successfully!")
-
-if __name__ == "__main__":
-    create_demo_users()
