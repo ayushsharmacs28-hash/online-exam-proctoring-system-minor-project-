@@ -31,7 +31,9 @@
                        name="name" 
                        placeholder="Enter your full name" 
                        required 
-                       autocomplete="name">
+                       autocomplete="name"
+                       pattern="[a-zA-Z\s'-]+"
+                       title="Name can only contain letters, spaces, hyphens, and apostrophes">
             </div>
             
             <div class="form-group">
@@ -49,10 +51,25 @@
                 <input type="password" 
                        id="password" 
                        name="password" 
-                       placeholder="Enter password (min 6 characters)" 
+                       placeholder="Create a strong password" 
                        required 
-                       minlength="6"
-                       autocomplete="new-password">
+                       autocomplete="new-password"
+                       minlength="8"
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                       title="Password must be at least 8 characters with uppercase, lowercase, and numbers">
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" 
+                       id="confirm_password" 
+                       name="confirm_password" 
+                       placeholder="Confirm your password" 
+                       required 
+                       autocomplete="new-password"
+                       minlength="8"
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+                       title="Password must be at least 6 characters with uppercase, lowercase, and numbers">
                 <small class="form-hint">Must be at least 6 characters</small>
             </div>
             
@@ -69,9 +86,24 @@
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match');
+                return;
+            }
+            
             if (password.length < 6) {
                 e.preventDefault();
                 alert('Password must be at least 6 characters long');
+                return;
+            }
+            
+            if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(password)) {
+                e.preventDefault();
+                alert('Password must contain at least one uppercase letter, one lowercase letter, and one number');
+                return;
             }
         });
     </script>
