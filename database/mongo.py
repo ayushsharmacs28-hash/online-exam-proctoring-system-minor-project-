@@ -1,12 +1,16 @@
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 import sys
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 def init_db():
     """Initialize database connection with error handling"""
     try:
         client = MongoClient(
-            "mongodb://localhost:27017/",
+            os.getenv('MONGO_URI', "mongodb://localhost:27017/"),
             serverSelectionTimeoutMS=5000
         )
         # Verify connection
