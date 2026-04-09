@@ -23,5 +23,5 @@ jobs:
 
       - name: Run Ping Script
         env:
-          MONGODB_URI: ${{ secrets.MONGO_URI }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
         run: python ping_db.py
